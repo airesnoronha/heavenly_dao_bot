@@ -1,0 +1,35 @@
+{
+  "name": "heavenly_dao_bot",
+  "version": "1.0.0",
+  "description": "A bot that keeps a discord server up to date with the content of the wuxiacraft mod",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airesnoronha/heavenly_dao_bot.git"
+  },
+  "keywords": [
+    "Discord",
+    "bot",
+    "WuxiaCraft",
+    "mod",
+    "content",
+    "GitHub"
+  ],
+  "author": "Aires Noronha Adures Filho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/airesnoronha/heavenly_dao_bot/issues"
+  },
+  "homepage": "https://github.com/airesnoronha/heavenly_dao_bot#readme",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "discord": "^0.8.2",
+    "express": "^4.17.2",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0"
+  }
+}
