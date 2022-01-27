@@ -15,13 +15,7 @@ const botClient = new Discord.Client({
 });
 
 botClient.on('ready', (client) => {
-	let channels = client.channels.cache.filter((ch) => ch.type === "GUILD_TEXT" && (ch.name === "chat" || ch.name === "general"));
 	console.log("Heavenly Dao Bot is ready to cultivate!");
-	channels.forEach((channel, key, map) => {
-		if (channel instanceof Discord.TextChannel) {
-			channel.send("Heavenly Dao Bot is ready to cultivate!");
-		}
-	});
 });
 
 async function onMessage(msg: Discord.Message) {
