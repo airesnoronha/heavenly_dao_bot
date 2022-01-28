@@ -2,3 +2,4 @@ node_modules
 .vs_code
 out
 package-lock.json
+nohup.out
