@@ -19,6 +19,10 @@ botClient.on('ready', (client) => {
 	console.log("Heavenly Dao Bot is ready to cultivate!");
 });
 
+function delayedDeleteMessage(message : Discord.Message) {
+	message.fetch().then(msg => msg.delete());
+}
+
 async function onMessage(msg: Discord.Message) {
 	if (msg.content.startsWith("dao!")) {
 		console.log("Got a message from a cultivator. So exciting!");
@@ -71,7 +75,7 @@ async function onMessage(msg: Discord.Message) {
 		if(msg.guild) ElementRefresher.refreshElements(botClient, msg.guild.id);
 		if (msg.deletable) {
 			if (user.permissions.has(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
-				setTimeout(msg.delete, 500);
+				setTimeout(() => {delayedDeleteMessage(msg)}, 500);
 			}
 		}
 		return;
