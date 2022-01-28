@@ -36,7 +36,9 @@ async function buildEmbedElementMessage(data: ElementData) {
 		embed.addField("Author", data.author);
 	}
 	if (data.texturePath) {
-		embed.setImage("https://github.com/airesnoronha/wuxiacraft/raw/0.0.10.0-1.18.1/src/main/" + data.texturePath);
+		//embed.setImage("https://github.com/airesnoronha/wuxiacraft/raw/0.0.10.0-1.18.1/src/main/resources/assets/wuxiacraft/" + data.texturePath);
+		embed.setThumbnail("https://github.com/airesnoronha/wuxiacraft/raw/0.0.10.0-1.18.1/src/main/resources/assets/wuxiacraft/" + data.texturePath);
+		console.log(embed.image);
 	}
 	if (data.listBegets) {
 		embed.addField("Begets", data.listBegets);
@@ -44,6 +46,7 @@ async function buildEmbedElementMessage(data: ElementData) {
 	if (data.listOpposes) {
 		embed.addField("Opposes", data.listOpposes);
 	}
+	embed.setTimestamp();
 	return embed;
 }
 
@@ -78,8 +81,26 @@ async function refreshElements(guildId:string) {
 				let endId = entry.indexOf(endParamenter, startId);
 				let varValue = entry.substring(startId, endId);
 				elementData[varName] = varValue;
-				//console.log("elementData["+varName+"]: " + varValue);
+				if(varName === "texturePath") console.log("elementData["+varName+"]: " + varValue);
 			}
+			let begetsSplits = entry.split(".begets(new ResourceLocation(WuxiaCraft.MOD_ID, \"");
+			let opposesSplits = entry.split(".suppresses(new ResourceLocation(WuxiaCraft.MOD_ID, \"");
+			let begetsMsg = "";
+			let opposesMSG = "";
+			for(var splits of begetsSplits) {
+				if(begetsSplits.indexOf(splits) == 0) continue;
+					let endParameter = "\"";
+					let endId = splits.indexOf(endParameter);
+					begetsMsg += splits.substring(0, endId) + "\n";
+			}
+			if(begetsSplits.length > 0) elementData['listBegets'] = begetsMsg;
+			for(var splits of opposesSplits) {
+				if(opposesSplits.indexOf(splits) == 0) continue;
+				let endParameter = "\"";
+				let endId = splits.indexOf(endParameter);
+				opposesMSG += splits.substring(0, endId) + "\n";
+			}
+			if(opposesSplits.length > 0) elementData['listOpposes'] = opposesMSG;
 			let embed = await buildEmbedElementMessage(elementData);
 			let entryId = elementData.entryId;
 			if (entryId == null || embed == null) continue;
