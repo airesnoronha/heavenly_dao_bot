@@ -66,7 +66,7 @@ async function onMessage(msg: Discord.Message) {
 			}
 			channel.send(returnMessage);
 			if (msg.deletable) {
-				setTimeout(msg.delete, 500);
+				setTimeout(() => {delayedDeleteMessage(msg)}, 500);
 			}
 		}
 		return;
