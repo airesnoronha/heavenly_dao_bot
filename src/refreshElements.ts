@@ -125,6 +125,5 @@ async function refreshElements(botClient: Discord.Client, guildId: string) {
 }
 
 export {
-	buildEmbedElementMessage,
 	refreshElements
 }

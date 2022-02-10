@@ -23,6 +23,14 @@ function delayedDeleteMessage(message : Discord.Message) {
 	message.fetch().then(msg => msg.delete());
 }
 
+async function onNewMember(member: Discord.GuildMember) {
+	let guild = await member.guild.fetch();
+	let channel = await guild.systemChannel?.fetch()
+	if(channel) {
+		channel.send("Welcome fellow daoist <@" + member.id + ">! Pay your respects to your senior brothers/sisters :smile:");
+	}
+}
+
 async function onMessage(msg: Discord.Message) {
 	if (msg.content.startsWith("dao!")) {
 		console.log("Got a message from a cultivator. So exciting!");
@@ -83,6 +91,7 @@ async function onMessage(msg: Discord.Message) {
 }
 
 botClient.on('messageCreate', onMessage);
+botClient.on('guildMemberAdd', onNewMember);
 
 
 
