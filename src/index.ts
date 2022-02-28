@@ -34,7 +34,7 @@ async function onNewMember(member: Discord.GuildMember) {
 
 const commands = new Map();
 
-commands.set("hello", async function (msg: Discord.Message, args: String[]) {
+commands.set("hello", async function (msg: Discord.Message, args: string[]) {
 	let channel = msg.channel;
 	let user = msg.author;
 	if (msg.deletable) {
@@ -44,7 +44,7 @@ commands.set("hello", async function (msg: Discord.Message, args: String[]) {
 	return;
 });
 
-commands.set("broadhello", async function (msg: Discord.Message, args: String[]) {
+commands.set("broadhello", async function (msg: Discord.Message, args: string[]) {
 	let channel = msg.channel;
 	let userId = msg.author.id;
 	let guildId = msg.guildId;
@@ -74,7 +74,7 @@ commands.set("broadhello", async function (msg: Discord.Message, args: String[])
 	return;
 });
 
-commands.set("refresh", async function (msg: Discord.Message, args: String[]) {
+commands.set("refresh", async function (msg: Discord.Message, args: string[]) {
 	let userId = msg.author.id;
 	let guildId = msg.guildId;
 	let guild = await botClient.guilds.fetch(guildId as Discord.Snowflake);
@@ -88,7 +88,7 @@ commands.set("refresh", async function (msg: Discord.Message, args: String[]) {
 	return;
 });
 
-commands.set("help", async function (msg: Discord.Message, args: String[]) {
+commands.set("help", async function (msg: Discord.Message, args: string[]) {
 	let channel = msg.channel;
 	let user = msg.author;
 	if (msg.deletable) {
@@ -111,6 +111,49 @@ commands.set("help", async function (msg: Discord.Message, args: String[]) {
 		}, 1200);
 	}, 600);
 	return;
+});
+
+commands.set("aspect", async function (msg: Discord.Message, args: string[]) {
+	let embed = new Discord.MessageEmbed();
+	let authored = false;
+	let author = "";
+	let imaged = false;
+	let image = "";
+	let titled = false;
+	let title = "";
+	let modifiedArgs = args;
+	if (msg.deletable) {
+		setTimeout(() => { delayedDeleteMessage(msg) }, 500);
+	}
+	let channel = msg.channel;
+	channel.sendTyping();
+	if (modifiedArgs.length > 0 && args[0].startsWith("<@")) {
+		authored = true;
+		author = modifiedArgs.splice(0, 1)[0];
+	}
+	if (modifiedArgs.length > 0 && modifiedArgs[0].startsWith("image.")) {
+		imaged = true;
+		image = modifiedArgs.splice(0,1)[0];
+	}
+	if(modifiedArgs.includes("=")) {
+		let index = modifiedArgs.indexOf("=");
+		titled = true;
+		title = modifiedArgs.splice(0, index).join(" ");
+		modifiedArgs.splice(0, 1); //removes the =
+	}
+	let message = modifiedArgs.join(" ");
+	if(titled) {
+		embed.addField(title, message);
+	} else {
+		embed.addField("Aspect", message);
+	}
+	if(authored) {
+		embed.addField("Author", author);
+	}
+	if(imaged) {
+		embed.setThumbnail(image);
+	}
+	await channel.send({embeds: [embed]});
 });
 
 async function onMessage(msg: Discord.Message) {
